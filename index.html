@@ -1523,7 +1523,8 @@
       initBoard();
       initPieces();
       resetBoard3D();
-      gameState.currentPlayer = 1;
+      // 先攻後攻をランダムに決定（1 or 2）
+      gameState.currentPlayer = Math.random() < 0.5 ? 1 : 2;
       gameState.selectedPieceId = null;
       gameState.winner = null;
       gameState.winningLine = null;
@@ -1532,7 +1533,14 @@
       victoryOverlay.classList.remove('active');
       renderReserves();
       updateStatusBar();
-      setStatusMessage('駒を選んでボードに配置');
+      const firstPlayerName = gameState.currentPlayer === 1 ? 'Player 1 (Blue)' :
+        (gameState.gameMode === 'CPU' ? 'AI (Green)' : 'Player 2 (Green)');
+      setStatusMessage(`${firstPlayerName} が先攻です！`);
+
+      // CPUモードでAIが先攻の場合、AIに手番を渡す
+      if (gameState.gameMode === 'CPU' && gameState.currentPlayer === 2) {
+        setTimeout(() => aiMove(), 800);
+      }
     }
 
     // ====================================
