@@ -164,6 +164,10 @@
         inset 0 0 30px rgba(74, 255, 0, 0.1);
     }
 
+    .drag-handle {
+      display: none;
+    }
+
     .reserve-label {
       text-align: center;
       font-size: 0.85rem;
@@ -606,28 +610,29 @@
     /* レスポンシブ - スマートフォン */
     @media (max-width: 600px) {
       .header {
-        top: 10px;
+        top: 8px;
         width: 100%;
         padding: 0 10px;
       }
 
       h1 {
-        font-size: 1.1rem;
-        letter-spacing: 0.1em;
+        font-size: 1rem;
+        letter-spacing: 0.08em;
       }
 
       .subtitle {
-        font-size: 0.65rem;
-        margin-top: 4px;
+        font-size: 0.6rem;
+        margin-top: 2px;
+        display: none;
       }
 
       .status-bar {
-        top: 70px;
+        top: 45px;
         min-width: auto;
-        max-width: 90%;
-        padding: 8px 12px;
-        font-size: 0.75rem;
-        gap: 8px;
+        max-width: 85%;
+        padding: 6px 10px;
+        font-size: 0.7rem;
+        gap: 6px;
         flex-wrap: wrap;
         justify-content: center;
       }
@@ -635,48 +640,66 @@
       .reserve-panel {
         position: fixed;
         top: auto;
-        bottom: 80px;
+        bottom: 60px;
         transform: none;
         min-width: auto;
-        padding: 10px;
-        border-radius: 12px;
-        max-width: 42%;
+        padding: 8px;
+        border-radius: 10px;
+        max-width: 38%;
+        cursor: grab;
+        touch-action: none;
+        user-select: none;
       }
 
-      .reserve-panel.p1 { left: 8px; right: auto; }
-      .reserve-panel.p2 { right: 8px; left: auto; }
+      .reserve-panel.dragging {
+        cursor: grabbing;
+        opacity: 0.9;
+        z-index: 100;
+      }
+
+      .reserve-panel .drag-handle {
+        display: block;
+        text-align: center;
+        font-size: 0.5rem;
+        opacity: 0.5;
+        margin-bottom: 4px;
+        letter-spacing: 0.1em;
+      }
+
+      .reserve-panel.p1 { left: 5px; right: auto; }
+      .reserve-panel.p2 { right: 5px; left: auto; }
 
       .reserve-label {
-        font-size: 0.7rem;
-        margin-bottom: 8px;
+        font-size: 0.6rem;
+        margin-bottom: 6px;
       }
 
       .reserve-pieces {
         flex-direction: row;
         flex-wrap: wrap;
-        gap: 6px;
+        gap: 4px;
         justify-content: center;
       }
 
-      .reserve-piece.large { width: 44px; height: 44px; }
-      .reserve-piece.medium { width: 34px; height: 34px; }
-      .reserve-piece.small { width: 24px; height: 24px; }
+      .reserve-piece.large { width: 38px; height: 38px; }
+      .reserve-piece.medium { width: 30px; height: 30px; }
+      .reserve-piece.small { width: 22px; height: 22px; }
 
       .control-row {
-        bottom: 15px;
-        gap: 10px;
+        bottom: 10px;
+        gap: 8px;
       }
 
       .btn {
-        padding: 10px 20px;
-        font-size: 0.8rem;
-        letter-spacing: 0.1em;
+        padding: 8px 16px;
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
       }
 
       .thinking-indicator {
-        top: 120px;
-        font-size: 0.8rem;
-        padding: 8px 14px;
+        top: 85px;
+        font-size: 0.7rem;
+        padding: 6px 12px;
       }
 
       /* モーダル */
@@ -761,35 +784,41 @@
     /* 超小型スマホ */
     @media (max-width: 380px) {
       h1 {
-        font-size: 0.95rem;
-      }
-
-      .subtitle {
-        font-size: 0.6rem;
+        font-size: 0.85rem;
       }
 
       .status-bar {
-        top: 60px;
-        padding: 6px 10px;
-        font-size: 0.7rem;
+        top: 38px;
+        padding: 5px 8px;
+        font-size: 0.65rem;
       }
 
       .reserve-panel {
-        bottom: 70px;
-        padding: 8px;
+        bottom: 55px;
+        padding: 6px;
+        max-width: 35%;
       }
 
-      .reserve-piece.large { width: 38px; height: 38px; }
-      .reserve-piece.medium { width: 30px; height: 30px; }
-      .reserve-piece.small { width: 22px; height: 22px; }
+      .reserve-label {
+        font-size: 0.55rem;
+      }
+
+      .reserve-piece.large { width: 32px; height: 32px; }
+      .reserve-piece.medium { width: 26px; height: 26px; }
+      .reserve-piece.small { width: 20px; height: 20px; }
 
       .btn {
-        padding: 8px 16px;
-        font-size: 0.75rem;
+        padding: 6px 12px;
+        font-size: 0.7rem;
+      }
+
+      .thinking-indicator {
+        top: 75px;
+        font-size: 0.65rem;
       }
 
       .victory-text {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
       }
     }
 
@@ -914,11 +943,13 @@
     </div>
 
     <div class="reserve-panel p1" id="reserve-p1">
+      <div class="drag-handle">≡ DRAG ≡</div>
       <div class="reserve-label">Player 1 (Blue)</div>
       <div class="reserve-pieces" id="reserve-pieces-p1"></div>
     </div>
 
     <div class="reserve-panel p2" id="reserve-p2">
+      <div class="drag-handle">≡ DRAG ≡</div>
       <div class="reserve-label">Player 2 (Green)</div>
       <div class="reserve-pieces" id="reserve-pieces-p2"></div>
     </div>
@@ -2511,9 +2542,83 @@
     document.getElementById('victory-new-game').addEventListener('click', showModeSelection);
 
     // ====================================
+    // パネルドラッグ機能（スマホ用）
+    // ====================================
+    function initPanelDrag() {
+      const panels = document.querySelectorAll('.reserve-panel');
+
+      panels.forEach(panel => {
+        let isDragging = false;
+        let startX, startY;
+        let initialLeft, initialTop, initialRight, initialBottom;
+
+        function onDragStart(e) {
+          // スマホのみドラッグ有効
+          if (window.innerWidth > 600) return;
+
+          // 駒クリックは除外
+          if (e.target.classList.contains('reserve-piece')) return;
+
+          isDragging = true;
+          panel.classList.add('dragging');
+
+          const touch = e.touches ? e.touches[0] : e;
+          startX = touch.clientX;
+          startY = touch.clientY;
+
+          const rect = panel.getBoundingClientRect();
+          initialLeft = rect.left;
+          initialTop = rect.top;
+
+          e.preventDefault();
+        }
+
+        function onDragMove(e) {
+          if (!isDragging) return;
+
+          const touch = e.touches ? e.touches[0] : e;
+          const deltaX = touch.clientX - startX;
+          const deltaY = touch.clientY - startY;
+
+          let newLeft = initialLeft + deltaX;
+          let newTop = initialTop + deltaY;
+
+          // 画面内に収める
+          const maxX = window.innerWidth - panel.offsetWidth;
+          const maxY = window.innerHeight - panel.offsetHeight;
+          newLeft = Math.max(0, Math.min(newLeft, maxX));
+          newTop = Math.max(0, Math.min(newTop, maxY));
+
+          panel.style.left = newLeft + 'px';
+          panel.style.top = newTop + 'px';
+          panel.style.right = 'auto';
+          panel.style.bottom = 'auto';
+
+          e.preventDefault();
+        }
+
+        function onDragEnd() {
+          isDragging = false;
+          panel.classList.remove('dragging');
+        }
+
+        // タッチイベント
+        panel.addEventListener('touchstart', onDragStart, { passive: false });
+        document.addEventListener('touchmove', onDragMove, { passive: false });
+        document.addEventListener('touchend', onDragEnd);
+
+        // マウスイベント（デバッグ用）
+        panel.addEventListener('mousedown', onDragStart);
+        document.addEventListener('mousemove', onDragMove);
+        document.addEventListener('mouseup', onDragEnd);
+      });
+    }
+
+    // ====================================
     // 初期化
     // ====================================
     init3D();
+    initPanelDrag();
     showModeSelection();
   </script>
 </body>
